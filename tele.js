@@ -1,5 +1,8 @@
-const BOT_TOKEN = '8087884422:AAH6f_EQ_fz5sZmgzVR6Oa2rU-jBxDySUAc';
-const CHAT_ID = '1386155375';
+import dotenv from "dotenv";
+dotenv.config();
+
+const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 export default async function sendMessage(message) {
   try {

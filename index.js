@@ -25,14 +25,12 @@ async function main() {
     model: "gemini-2.5-flash",
     contents: [
       createUserContent([
-        "Only answer the question directly without any extra details. If the question is a multiple choice question with multiple options, respond only with the option and the answer",
+        "Answer question shown in the image. Give a direct, concise response without extra details. For multiple-choice questions, respond only with the letter of the correct option and its answer. Do not add any unrelated information.",
         createPartFromUri(image.uri, image.mimeType),
       ]),
     ],
-    config: {
-      systemInstruction: "Only answer the question directly without any extra details. If the question is a multiple choice question with multiple options, respond only with the option and the answer.",
-    },
   });
+  console.log(response.text);
   await sendMessage(response.text);
 }
 
