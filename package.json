@@ -5,7 +5,7 @@
 		"screenshot-desktop": "^1.15.1"
 	},
 	"type": "module",
-	"name": "hack",
+	"name": "peepoo",
 	"version": "1.0.0",
 	"main": "index.js",
 	"devDependencies": {},
