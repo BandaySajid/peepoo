@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: rgba(0, 0, 0, 0.4);
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      min-width: 100vw;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      min-width: 100vw;
+      display: flex;
+      align-items: stretch;
+      justify-content: stretch;
+    }
+
+    .overlay {
+      font-family: system-ui, sans-serif;
+      font-size: clamp(12px, 2vw, 20px);
+      line-height: 1.4;
+      padding: 4vw 6vw;
+      border-radius: 0;
+      outline: none;
+      background: transparent;
+      color: #181818;
+      width: 100vw;
+      height: 100vh;
+      min-width: 100vw;
+      min-height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      word-break: break-word;
+      overflow: hidden;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      -webkit-app-region: drag;
+      /* Add box shadow for overlay */
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18), 0 1.5px 6px 0 rgba(0, 0, 0, 0.10);
+      border: none;
+      /* Support dark mode */
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      /* Add subtle text shadow for readability */
+      text-shadow: 0 1px 6px rgba(255, 255, 255, 0.7), 0 1px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .overlay {
+        background: transparent;
+        color: #fff;
+        border: none;
+        /* Add box shadow for dark mode */
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), 0 1.5px 6px 0 rgba(0, 0, 0, 0.25);
+        text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8), 0 1px 6px rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    #main-text {
+      width: 100%;
+      text-align: center;
+      /* shrink text if needed to fit */
+      font-size: inherit;
+      overflow-wrap: break-word;
+      hyphens: auto;
+      flex: 1 1 auto;
+      display: block;
+      /* Prevent overflow */
+      overflow: hidden;
+      white-space: pre-line;
+      /* Truncate with ellipsis if too long */
+      text-overflow: ellipsis;
+      max-height: 100vh;
+      /* Add text shadow for readability */
+      text-shadow: inherit;
+    }
+
+    .hint {
+      font-size: clamp(10px, 1.2vw, 14px);
+      opacity: 0.6;
+      margin-top: 2vw;
+      width: 100%;
+      text-align: center;
+      word-break: break-word;
+      user-select: none;
+      pointer-events: none;
+      /* Add text shadow for readability */
+      text-shadow: inherit;
+    }
+
+    @media (max-width: 600px) {
+      .overlay {
+        font-size: clamp(10px, 4vw, 16px);
+        padding: 4vw 2vw;
+      }
+
+      .hint {
+        font-size: clamp(9px, 2.5vw, 12px);
+        margin-top: 3vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay" id="overlay">
+    <span id="main-text">Stay focused. Build epic stuff. 🚀 .</span>
+    <div class="hint">Hotkeys: Ctrl/⌘+Shift+T (toggle click-through), Ctrl/⌘+Shift+O (show/hide)</div>
+
+  </div>
+  <script>
+    window.electronAPI?.hideScreen?.(() => {
+      document.documentElement.style.display = 'none';
+    });
+    window.electronAPI?.showScreen?.(() => {
+      console.log('showing screen');
+      document.documentElement.style.display = '';
+    });
+    window.electronAPI?.onUpdateText?.((text) => {
+      if (text && text.length > 50) {
+        document.getElementById('main-text').textContent = "Long answer sent to Discord.";
+      } else {
+        document.getElementById('main-text').textContent = text;
+      }
+    });
+  </script>
+</body>
+
+
+</html>
