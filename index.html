@@ -11,30 +11,21 @@
       background: rgba(0, 0, 0, 0.4);
       width: 100vw;
       height: 100vh;
-      min-height: 100vh;
       min-width: 100vw;
+      min-height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
       box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    body {
-      width: 100vw;
-      height: 100vh;
-      min-height: 100vh;
-      min-width: 100vw;
-      display: flex;
-      align-items: stretch;
-      justify-content: stretch;
     }
 
     .overlay {
       font-family: system-ui, sans-serif;
-      font-size: clamp(12px, 2vw, 20px);
-      line-height: 1.4;
-      padding: 4vw 6vw;
+      font-size: 12px;
+      padding: 4vw 0vw;
+      /* Remove side padding to use full width */
       border-radius: 0;
       outline: none;
-      background: transparent;
+      background: green;
       color: #181818;
       width: 100vw;
       height: 100vh;
@@ -43,12 +34,7 @@
       max-width: 100vw;
       max-height: 100vh;
       box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       word-break: break-word;
-      overflow: hidden;
       position: fixed;
       top: 0;
       left: 0;
@@ -61,6 +47,10 @@
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
       /* Add subtle text shadow for readability */
       text-shadow: 0 1px 6px rgba(255, 255, 255, 0.7), 0 1px 6px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -76,21 +66,26 @@
 
     #main-text {
       width: 100%;
-      text-align: center;
-      /* shrink text if needed to fit */
       font-size: inherit;
       overflow-wrap: break-word;
       hyphens: auto;
-      flex: 1 1 auto;
-      display: block;
-      /* Prevent overflow */
-      overflow: hidden;
+      /* Allow scrolling if text is too long */
+      overflow: auto;
       white-space: pre-line;
-      /* Truncate with ellipsis if too long */
-      text-overflow: ellipsis;
-      max-height: 100vh;
+      /* Remove ellipsis and max-height to allow full text display */
+      text-overflow: unset;
+      max-height: none;
       /* Add text shadow for readability */
       text-shadow: inherit;
+      /* Add padding for scrollbars */
+      padding-bottom: 2vw;
+      box-sizing: border-box;
+      margin: 0;
+      padding-left: 0;
+      padding-right: 0;
+      /* Ensure full width usage */
+      flex: 1 1 auto;
+      align-self: stretch;
     }
 
     .hint {
@@ -109,7 +104,8 @@
     @media (max-width: 600px) {
       .overlay {
         font-size: clamp(10px, 4vw, 16px);
-        padding: 4vw 2vw;
+        padding: 4vw 0vw;
+        /* Remove side padding for mobile too */
       }
 
       .hint {
@@ -122,9 +118,8 @@
 
 <body>
   <div class="overlay" id="overlay">
-    <span id="main-text">Stay focused. Build epic stuff. 🚀 .</span>
+    <span id="main-text" tabindex="0">Stay focused. Build epic stuff 🚀</span>
     <div class="hint">Hotkeys: Ctrl/⌘+Shift+T (toggle click-through), Ctrl/⌘+Shift+O (show/hide)</div>
-
   </div>
   <script>
     window.electronAPI?.hideScreen?.(() => {
@@ -135,14 +130,12 @@
       document.documentElement.style.display = '';
     });
     window.electronAPI?.onUpdateText?.((text) => {
-      if (text && text.length > 50) {
-        document.getElementById('main-text').textContent = "Long answer sent to Discord.";
-      } else {
-        document.getElementById('main-text').textContent = text;
-      }
+      const mainText = document.getElementById('main-text');
+      mainText.textContent = text;
+      // Scroll to top in case of long text
+      mainText.scrollTop = 0;
     });
   </script>
 </body>
-
 
 </html>
